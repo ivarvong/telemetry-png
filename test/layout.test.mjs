@@ -60,3 +60,11 @@ test('a page always takes at least one row, even if it cannot fit', () => {
   const doc = layoutTrace(model(synth(20)), { maxHeight: 50 });
   assert.equal(doc.pages.length, model(synth(20)).rows.length);
 });
+
+test('layoutTrace rejects non-finite widths and clamps the rest to 720..8192', () => {
+  const t = model(synth(20));
+  for (const width of [NaN, Infinity, 'abc']) assert.throws(() => layoutTrace(t, { width }), RangeError);
+  assert.throws(() => layoutTrace(t, { maxHeight: NaN }), RangeError);
+  assert.equal(layoutTrace(t, { width: 1e7 }).width, 8192);
+  assert.equal(layoutTrace(t, { width: 1 }).width, 720);
+});

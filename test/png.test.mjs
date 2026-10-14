@@ -71,6 +71,29 @@ test('bad input fails clearly; a cancelled stream does not throw', async () => {
   }
 });
 
+test('invalid options throw a RangeError before any work; width is clamped to 720..8192', () => {
+  const bad = [
+    [{ width: NaN }, /width/], [{ width: 'abc' }, /width/], [{ width: Infinity }, /width/], [{ width: '1280' }, /width/],
+    [{ maxHeight: NaN }, /maxHeight/], [{ maxHeight: 0 }, /maxHeight/], [{ maxHeight: -5 }, /maxHeight/],
+    [{ scale: 3 }, /scale/], [{ scale: '2' }, /scale/], [{ scale: NaN }, /scale/],
+    [{ fold: NaN }, /fold/], [{ fold: -1 }, /fold/],
+    [{ compress: 'gzip' }, /compress must be one of 'stream', 'js', got "gzip"/], [{ compress: null }, /compress/],
+  ];
+  for (const [opts, re] of bad) assert.throws(() => openTrace(sample, opts), (e) => e instanceof RangeError && re.test(e.message), JSON.stringify(opts));
+  assert.equal(openTrace(sample, { width: 1e7 }).width, 8192);
+  assert.equal(openTrace(sample, { width: 1e7, scale: 2 }).width, 16384);
+  assert.equal(openTrace(sample, { width: 10 }).width, 720);
+  assert.equal(decodePng(renderTracePagesSync(sample, { width: 1e9 })[0]).width, 8192);
+});
+
+test('a trace starting at the last representable uint64 nanosecond renders', () => {
+  const t = (ns) => String(2n ** 64n - 1n - BigInt(ns));
+  const o = { resourceSpans: [{ scopeSpans: [{ spans: [{ spanId: 'a', name: 'late', startTimeUnixNano: t(1000), endTimeUnixNano: t(0) }, { spanId: 'b', name: 'beyond', startTimeUnixNano: '18446744073709551616', endTimeUnixNano: '18446744073709551617' }] }] }] };
+  const [png] = renderTracePagesSync(o);
+  assert.equal(decodePng(png).width, 1280);
+  assert.equal(openTrace(o).trace.invalid, 1);
+});
+
 test('peak buffer memory is bounded by the band, not the image', () => {
   const t = openTrace(synth(3000), { maxHeight: Infinity });
   const raw = (t.width + 1) * t.heights[0];

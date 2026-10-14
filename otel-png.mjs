@@ -10,8 +10,9 @@
 //   otel-png-layout.mjs   model -> pages of draw operations. No OTLP, no bytes.
 //   otel-png-raster.mjs   draw operations -> scanlines; this file frames them as PNG.
 //
-// Options: width (1280), maxHeight (960; Infinity for one tall image), scale (1 | 2),
-// detail (true), fold (5), compress, tracer.
+// Options: width (1280, clamped to 720..8192), maxHeight (960; Infinity for one tall
+// image), scale (1 | 2), detail (true), fold (5; 0 = off), compress, tracer.
+// Invalid values throw a RangeError before any work is done.
 //
 // Defaults target a vision model: one page is at most 1280 x 960 at 1x, about 1.2 MP,
 // which models read at native resolution instead of downscaling.
@@ -73,8 +74,19 @@ const concat = (parts) => {
 
 // ---------- pipeline ----------
 
+const COMPRESS = ['stream', 'js'];
+function checkOptions({ width = 1280, maxHeight = 960, scale = 1, fold = 5, compress = 'stream' }) {
+  const fail = (what, v) => { throw new RangeError(`${what}, got ${typeof v === 'string' ? JSON.stringify(v) : String(v)}`); };
+  if (typeof width !== 'number' || !Number.isFinite(width)) fail('width must be a finite number', width);
+  if (typeof maxHeight !== 'number' || !(maxHeight > 0)) fail('maxHeight must be a positive number or Infinity', maxHeight);
+  if (scale !== 1 && scale !== 2) fail('scale must be 1 or 2', scale);
+  if (typeof fold !== 'number' || !Number.isFinite(fold) || fold < 0) fail('fold must be a non-negative number', fold);
+  if (!COMPRESS.includes(compress)) fail(`compress must be one of ${COMPRESS.map((c) => `'${c}'`).join(', ')}`, compress);
+}
+
 // Parse, analyse and lay out once; then render any page, as chunks or as a stream.
 export function openTrace(otlp, opts = {}) {
+  checkOptions(opts);
   const { scale = 1, compress = 'stream', tracer } = opts;
   const span = tracer?.span ?? untraced;
   const info = {};

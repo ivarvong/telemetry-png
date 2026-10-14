@@ -2,7 +2,7 @@
 // OTLP and nothing about bytes: it only places text runs and rectangles, in logical
 // pixels, using the font cell size and ink names from the raster module.
 //
-//   layoutTrace(trace, { width, maxHeight, detail }) ->
+//   layoutTrace(trace, { width, maxHeight, detail }) ->   width clamped to 720..8192
 //     { width, maxBand, pages: [{ height, from, to, bands() }] }
 //
 // A page is at most maxHeight tall (Infinity for one tall image). bands() lazily
@@ -57,8 +57,13 @@ function ticks(total) {
   return out;
 }
 
+// Logical width is clamped to [MIN_WIDTH, MAX_WIDTH]; a band's buffer grows with it.
+export const MIN_WIDTH = 720, MAX_WIDTH = 8192;
+
 export function layoutTrace(trace, { width = 1280, maxHeight = 960, detail = true } = {}) {
-  const W = Math.max(720, Math.round(width));
+  if (typeof width !== 'number' || !Number.isFinite(width)) throw new RangeError(`width must be a finite number, got ${String(width)}`);
+  if (typeof maxHeight !== 'number' || !(maxHeight > 0)) throw new RangeError(`maxHeight must be a positive number or Infinity, got ${String(maxHeight)}`);
+  const W = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, Math.round(width)));
   const inner = W - 2 * M, right = W - M;
   // With a single service the SERVICE column would say the same thing on every row,
   // so it is dropped and its width goes to span names.
