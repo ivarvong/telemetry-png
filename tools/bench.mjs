@@ -1,7 +1,7 @@
-// bench.mjs — warm timings from the renderer's own traces. Dev tool, not part of the library.
-//   node --expose-gc bench.mjs <spans> [runs] [--tall] [--scale 2]
-import { openTrace, createTracer } from './otel-png.mjs';
-import { synth } from './tools/synth.mjs';
+// tools/bench.mjs — warm timings from the renderer's own traces. Dev tool, not part of the library.
+//   node --expose-gc tools/bench.mjs <spans> [runs] [--tall] [--scale 2]
+import { openTrace, createTracer } from '../otel-png.mjs';
+import { synth } from './synth.mjs';
 
 const args = process.argv.slice(2);
 const tall = args.includes('--tall'), scale = args.includes('--scale') ? Number(args[args.indexOf('--scale') + 1]) : 1;
