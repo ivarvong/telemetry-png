@@ -33,22 +33,24 @@ const pick = (obj, paths) => {
 
 // Epoch time in unknown units -> nanoseconds as a decimal string (OTLP's uint64 form).
 // Epoch milliseconds are about 1.8e12, microseconds 1.8e15, nanoseconds 1.8e18.
+// Only numbers, bigints and decimal strings are times; booleans, hex and results
+// that do not fit in a uint64 are not.
+const MAX_U64 = (1n << 64n) - 1n;
 export function toUnixNano(t) {
-  if (t == null || t === '') return null;
   let n;
   try {
     if (typeof t === 'bigint') n = t;
     else if (typeof t === 'string' && /^\d+$/.test(t)) n = BigInt(t);
-    else {
+    else if (typeof t === 'number' || (typeof t === 'string' && /^\d+(\.\d*)?(e\+?\d+)?$/i.test(t))) {
       const number = Number(t);
       if (!Number.isFinite(number)) return null;
       n = BigInt(Math.round(number));
-    }
+    } else return null;
   } catch { return null; }
   if (n <= 0n) return null;
-  if (n < 10n ** 14n) return String(n * 1_000_000n); // ms
-  if (n < 10n ** 17n) return String(n * 1_000n); // us
-  return String(n); // ns
+  if (n < 10n ** 14n) n *= 1_000_000n; // ms
+  else if (n < 10n ** 17n) n *= 1_000n; // us
+  return n <= MAX_U64 ? String(n) : null; // ns
 }
 
 // ---------- querying ----------

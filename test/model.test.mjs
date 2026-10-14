@@ -85,6 +85,51 @@ test('malformed spans are dropped and counted, never thrown on', () => {
   assert.equal(build(o).invalid, 3);
 });
 
+test('mis-shaped containers are skipped and mis-typed fields coerced, never thrown on', () => {
+  const good = () => otlp(['a', 'ok', 0, 10]).resourceSpans[0].scopeSpans[0].spans[0];
+  for (const resourceSpans of [undefined, null, 'x', 42, {}, { length: 1 }]) assert.deepEqual(normalize({ resourceSpans }), { spans: [], invalid: 0 });
+  for (const o of [null, undefined, 'x', 7, []]) assert.deepEqual(normalize(o), { spans: [], invalid: 0 });
+  const o = { resourceSpans: [null, 7, { resource: { attributes: [null, 'x'] }, scopeSpans: [null, 'x', { spans: { 0: good() } }, { spans: [null, 'x', good()] }] }] };
+  const n = normalize(o);
+  assert.equal(n.spans.length, 1);
+  assert.equal(n.invalid, 2);
+  assert.equal(n.spans[0].service, 'unknown');
+
+  const s = Object.assign(good(), {
+    name: { toString: null },
+    attributes: { key: 'k', value: { stringValue: 'v' } },
+    events: { name: 'exception' },
+    status: { code: 2, message: { nested: true } },
+  });
+  let [span] = normalize({ resourceSpans: [{ scopeSpans: [{ spans: [s] }] }] }).spans;
+  assert.equal(span.name, '{"toString":null}');
+  assert.deepEqual(span.attrs, []);
+  assert.deepEqual(span.events, []);
+  assert.equal(span.message, '{"nested":true}');
+
+  Object.assign(s, {
+    name: Object.create(null),
+    attributes: [null, 3, { key: { toString: null }, value: { intValue: 10n } }, { key: 'big', value: { arrayValue: { values: [1n] } } }],
+    events: [null, 'x', { name: 'exception', timeUnixNano: ns(1), attributes: [null, { key: 'exception.message', value: { stringValue: {} } }] }],
+    status: 'error',
+  });
+  [span] = normalize({ resourceSpans: [{ scopeSpans: [{ spans: [s] }] }] }).spans;
+  assert.equal(span.name, '{}');
+  assert.deepEqual(span.attrs, [['{"toString":null}', '10'], ['big', '']]);
+  assert.deepEqual(span.events.map((e) => e.name), ['exception']);
+  assert.equal(span.message, '');
+  assert.equal(span.error, false);
+  assert.equal(build({ resourceSpans: [{ scopeSpans: [{ spans: [s] }] }] }).rows.length, 1);
+});
+
+test('timestamps must be uint64 decimals or integers: booleans, hex and >= 2^64 are invalid', () => {
+  const at = (start) => normalize(otlp(['a', 'x', 0, 1, { start, end: start }])).spans.length;
+  for (const bad of [true, false, '0x10', '0b1', '0o7', ' 1760000000000000000', '+1', '-1', '1.5', '1e18', 1.5, -1, 0, '0', '', '18446744073709551616', 2n ** 64n, 2 ** 64, {}, [1]]) {
+    assert.equal(at(bad), 0, String(typeof bad === 'bigint' ? `${bad}n` : JSON.stringify(bad)));
+  }
+  for (const good of ['18446744073709551615', 2n ** 64n - 1n, 1760000000000000000n, 1000, '1']) assert.equal(at(good), 1, String(good));
+});
+
 test('end before start is clamped to zero duration and marked', () => {
   const t = build(otlp(['a', 'root', 0, 10, {}, [['a', 'skewed', 8, 6]]]));
   assert.equal(row(t, 'skewed').dur, 0);

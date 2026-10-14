@@ -17,6 +17,16 @@ test('toUnixNano normalises ms, us and ns by magnitude', () => {
   for (const malformed of ['not-a-time', '12ms', NaN, Infinity, Symbol('time')]) assert.equal(toUnixNano(malformed), null);
 });
 
+test('toUnixNano rejects booleans, hex, objects and values beyond uint64', () => {
+  for (const bad of [true, false, '0x10', ' 12', '1e400', {}, [1760000000000], 2n ** 64n, '18446744073709551616', 1e20, 2e13 * 1e6 * 1e3]) {
+    assert.equal(toUnixNano(bad), null, String(bad));
+  }
+  assert.equal(toUnixNano('18446744073709551615'), '18446744073709551615');
+  assert.equal(toUnixNano(18446744073709), '18446744073709000000'); // ms near the uint64 limit
+  assert.equal(toUnixNano('1760000000000.4'), '1760000000000000000');
+  assert.equal(toUnixNano(1760000000000n), '1760000000000000000');
+});
+
 test('events with malformed timestamps are dropped instead of throwing', () => {
   const event = structuredClone(events[0]);
   event.$metadata.startTimeNs = 'not-a-time';

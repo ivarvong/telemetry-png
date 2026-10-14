@@ -1,6 +1,6 @@
 // otel-png-model.mjs — OTLP JSON -> trace model. Knows nothing about pixels.
 //
-//   normalize(otlp)        validate and flatten spans; never throws on bad spans
+//   normalize(otlp)        validate and flatten spans; never throws on bad input
 //   buildTrace(normal)     forest, self time, critical path, aggregates, display rows
 //
 // Contracts (each has tests in test/model.test.mjs):
@@ -21,8 +21,10 @@
 //               span; they partition [0, total] together with `untraced`, the time
 //               on the path that no span accounts for (queue lag, missing
 //               instrumentation). Shortening a `crit` interval shortens the trace.
-//   Invalid     Spans with a missing or unparseable id or timestamp, and duplicate
-//               ids, are dropped and counted in `invalid`. end < start is clamped
+//   Invalid     Spans with a missing or unparseable id or timestamp (a uint64 > 0
+//               as a decimal string or integer), and duplicate ids, are dropped and
+//               counted in `invalid`. Mis-shaped containers are skipped; mis-typed
+//               names, messages and attributes are coerced to strings. end < start is clamped
 //               to zero duration and marked with an attribute.
 //   Folding     >= `fold` leaf siblings with the same service and name become one
 //               display row carrying every member's interval. Analysis runs first,
@@ -39,52 +41,80 @@ export function formatDuration(ns) {
 
 // ---------- normalize ----------
 
+// Hostile or mis-shaped input is skipped or coerced, never thrown on.
+const list = (v) => (Array.isArray(v) ? v : []);
+const isObj = (v) => v !== null && typeof v === 'object';
+const text = (v, fallback = '') => {
+  if (v == null) return fallback;
+  if (typeof v === 'string') return v;
+  try {
+    return isObj(v) ? JSON.stringify(v) ?? fallback : String(v);
+  } catch {
+    return fallback; // BigInt inside an object, cycles, a throwing toJSON
+  }
+};
+const id = (v) => (typeof v === 'string' ? v : typeof v === 'number' && Number.isFinite(v) ? String(v) : '');
+
 const anyValue = (v) =>
-  v == null ? '' : v.stringValue ?? v.intValue ?? v.doubleValue ?? v.boolValue ?? JSON.stringify(v.arrayValue?.values ?? v.kvlistValue?.values ?? v);
+  !isObj(v) ? text(v) : text(v.stringValue ?? v.intValue ?? v.doubleValue ?? v.boolValue ?? v.arrayValue?.values ?? v.kvlistValue?.values ?? v);
+
+const attributes = (attrs) => list(attrs).flatMap((a) => (isObj(a) ? [[text(a.key), anyValue(a.value)]] : []));
 
 const exceptionText = (events) => {
-  const attrs = events?.find((e) => e.name === 'exception')?.attributes ?? [];
-  const get = (k) => attrs.find((a) => a.key === k)?.value?.stringValue;
+  const attrs = list(list(events).find((e) => isObj(e) && e.name === 'exception')?.attributes);
+  const get = (k) => {
+    const v = attrs.find((a) => isObj(a) && a.key === k)?.value?.stringValue;
+    return typeof v === 'string' ? v : undefined;
+  };
   return get('exception.message') ?? get('exception.type');
 };
 
+// OTLP times are uint64 nanoseconds: a decimal string (JSON), or an integer Number/BigInt.
+// Anything else (booleans, hex, signs, fractions, >= 2^64) is invalid, not reinterpreted.
+const MAX_U64 = (1n << 64n) - 1n;
 const timestamp = (v) => {
-  try {
-    const t = BigInt(v); // uint64 as a string: Number would lose precision
-    return t > 0n ? t : null;
-  } catch {
-    return null;
-  }
+  let t;
+  if (typeof v === 'bigint') t = v;
+  else if (typeof v === 'string' && /^\d{1,20}$/.test(v)) t = BigInt(v); // Number would lose precision
+  else if (typeof v === 'number' && Number.isSafeInteger(v)) t = BigInt(v);
+  else return null;
+  return t > 0n && t <= MAX_U64 ? t : null;
 };
 
 export function normalize(otlp) {
   const spans = [];
   const ids = new Set();
   let invalid = 0;
-  for (const rs of otlp?.resourceSpans ?? []) {
-    const service = rs.resource?.attributes?.find((a) => a.key === 'service.name')?.value?.stringValue ?? 'unknown';
-    for (const ss of rs.scopeSpans ?? []) {
-      for (const s of ss.spans ?? []) {
+  for (const rs of list(otlp?.resourceSpans)) {
+    if (!isObj(rs)) continue;
+    const name = list(rs.resource?.attributes).find((a) => isObj(a) && a.key === 'service.name')?.value?.stringValue;
+    const service = typeof name === 'string' ? name : 'unknown';
+    for (const ss of list(rs.scopeSpans)) {
+      if (!isObj(ss)) continue;
+      for (const s of list(ss.spans)) {
+        if (!isObj(s)) { invalid++; continue; }
+        const spanId = id(s.spanId);
         const start = timestamp(s.startTimeUnixNano);
         let end = timestamp(s.endTimeUnixNano);
-        if (!s.spanId || ids.has(s.spanId) || start === null || end === null) { invalid++; continue; }
-        ids.add(s.spanId);
-        const attrs = (s.attributes ?? []).map((a) => [String(a.key), String(anyValue(a.value))]);
+        if (!spanId || ids.has(spanId) || start === null || end === null) { invalid++; continue; }
+        ids.add(spanId);
+        const attrs = attributes(s.attributes);
         if (end < start) { end = start; attrs.push(['otel-png.clamped', 'end<start']); }
+        const status = isObj(s.status) ? s.status : {};
         spans.push({
-          id: s.spanId,
-          parent: s.parentSpanId || null,
-          traceId: s.traceId ?? '',
-          name: String(s.name ?? ''),
+          id: spanId,
+          parent: id(s.parentSpanId) || null,
+          traceId: id(s.traceId),
+          name: text(s.name),
           service,
           start,
           end,
-          error: s.status?.code === 2 || s.status?.code === 'STATUS_CODE_ERROR',
-          message: s.status?.message || exceptionText(s.events) || '',
+          error: status.code === 2 || status.code === 'STATUS_CODE_ERROR',
+          message: text(status.message) || exceptionText(s.events) || '',
           attrs,
-          events: (s.events ?? []).flatMap((e) => {
-            const t = timestamp(e.timeUnixNano);
-            return t === null ? [] : [{ name: String(e.name ?? 'event'), t }];
+          events: list(s.events).flatMap((e) => {
+            const t = isObj(e) ? timestamp(e.timeUnixNano) : null;
+            return t === null ? [] : [{ name: text(e.name, 'event'), t }];
           }),
         });
       }
