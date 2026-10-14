@@ -7,12 +7,16 @@ Dependency-free JavaScript renderers for turning telemetry into compact PNGs:
 
 The renderers use baked fonts and indexed-color PNGs. The trace library has no Node imports and can run in modern web-runtime environments such as Cloudflare Workers.
 
+![A 182 ms checkout trace across three services rendered by otel-png: summary boxes, self time by service, the five spans with the most time on the critical path, then the span tree with duration, self and on-path columns, attributes, error markers and a timeline](./sample-trace.png)
+
+*[`sample-trace.json`](./sample-trace.json) rendered with the CLI defaults.*
+
 > [!WARNING]
 > This is an experimental `0.x` project. Rendering, layout, defaults, and APIs may change. Treat generated images as diagnostic views, not as lossless replacements for source telemetry. In particular, profile values are sampled estimates and converted Chrome CPU profiles are not request wall time or span duration.
 
 ## Requirements
 
-Node.js 20 or newer is supported for the library, command-line tools, and core development suite. Local Worker smoke tests require Node.js 22 or newer because the pinned Wrangler version requires it. Runtime use outside Node requires Web Streams plus `CompressionStream`/`DecompressionStream`; trace rendering can instead select the synchronous JavaScript compressor with `compress: 'js'`.
+The package is ESM-only (`"type": "module"`, no CommonJS build): use `import`, and save the snippets below as `.mjs` files (or in a package with `"type": "module"`). Node.js 20 or newer is supported for the library, command-line tools, and core development suite. Local Worker smoke tests require Node.js 22 or newer because the pinned Wrangler version requires it. Runtime use outside Node requires Web Streams plus `CompressionStream`/`DecompressionStream`; trace rendering can instead select the synchronous JavaScript compressor with `compress: 'js'`.
 
 ## Trace rendering
 
@@ -24,28 +28,30 @@ cd telemetry-png
 node otel-png-cli.mjs trace.otlp.json trace.png
 ```
 
-The package and CLI retain the name `otel-png`; this repository release does not publish an npm package.
+The package and CLI retain the name `otel-png`; this repository release does not publish an npm package. Installed from a local checkout (`npm install /path/to/telemetry-png`), the command is `otel-png` and the modules are importable as `otel-png` and `otel-png/cloudflare`.
 
-The input is OTLP trace JSON. If the trace needs several pages, the command writes `trace-01.png`, `trace-02.png`, and so on.
+The input is OTLP trace JSON. The output path is optional and defaults to `trace.png`. If the trace needs several pages, the command writes `trace-01.png`, `trace-02.png`, and so on (named after the output path). Errors are reported as one line on stderr: exit status 2 for usage errors, 1 for anything else.
 
 Useful options:
 
 ```text
 --tall                 render one tall image
 --max-height N         maximum logical page height (default: 960)
---width N              logical width (default: 1280)
+--width N              logical width, clamped to 720..8192 (default: 1280)
 --scale 1|2            device pixels per logical pixel (default: 1)
 --fold N               fold N or more identical leaf siblings (default: 5; 0 disables)
 --no-detail            omit attribute detail lines
 --compress stream|js   platform or pure-JS compression
 --trace self.json      emit the renderer's own OTLP trace
+-h, --help             show usage
+--version              print the version
 ```
 
 The JavaScript API returns PNG bytes as `Uint8Array` values:
 
 ```js
 import { readFile, writeFile } from 'node:fs/promises';
-import { renderTrace, renderTracePages, openTrace } from './otel-png.mjs';
+import { renderTrace, renderTracePages, openTrace } from './otel-png.mjs'; // or 'otel-png' when installed
 
 const otlp = JSON.parse(await readFile('trace.otlp.json', 'utf8'));
 
@@ -54,14 +60,32 @@ await writeFile('trace.png', await renderTrace(otlp));
 
 // Vision-model-sized pages (1280x960 logical pixels by default).
 const pages = await renderTracePages(otlp);
-await Promise.all(pages.map((png, i) => writeFile(`trace-${i + 1}.png`, png)));
+await Promise.all(pages.map((png, i) => writeFile(`trace-${String(i + 1).padStart(2, '0')}.png`, png)));
 
 // Stream a page without collecting the complete PNG in memory.
 const trace = openTrace(otlp);
 const response = new Response(trace.stream(0));
 ```
 
-Synchronous counterparts (`renderTraceSync` and `renderTracePagesSync`) use the pure-JavaScript compressor. See the exports in [`otel-png.mjs`](./otel-png.mjs) for the complete API and options.
+Synchronous counterparts (`renderTraceSync` and `renderTracePagesSync`) use the pure-JavaScript compressor. Options are `width`, `maxHeight`, `scale` (1 or 2), `detail`, `fold` and `compress` (`'stream'` or `'js'`); invalid values throw a `RangeError` before rendering starts. Malformed spans are dropped and counted rather than thrown on. See the exports in [`otel-png.mjs`](./otel-png.mjs) for the complete API.
+
+### Cloudflare Workers Observability (`otel-png/cloudflare`)
+
+[`otel-png-cf.mjs`](./otel-png-cf.mjs) fetches the spans of one trace from the Workers Observability telemetry API (the `otel` dataset) and maps them to OTLP JSON for the renderer. It has no dependencies and `fetch` is injectable, so it runs in Workers, Node and tests.
+
+```js
+import { fetchTraceEvents, eventsToOtlp } from 'otel-png/cloudflare'; // or './otel-png-cf.mjs'
+import { renderTracePages } from 'otel-png';
+
+const events = await fetchTraceEvents({ accountId, token, traceId, from, to }); // from/to: epoch ms
+const pages = await renderTracePages(eventsToOtlp(events));
+```
+
+- `fetchTraceEvents` follows cursor pagination and stops at `maxEvents` (default 1000) or `maxPages` (default 50); requests time out after 10 s unless a `signal` is passed.
+- `eventsToOtlp` copies source attributes only from an exact allowlist (`SAFE_ATTRIBUTE_PATHS` by default: operation, status and size fields, no URLs, hosts, headers, keys or ids) and records error presence without the error message unless `includeErrorMessage: true`. Events without a span id or usable times are counted in a non-enumerable `dropped` property.
+- `recentTracesQuery`, `runQuery` and `traceSummaries` list recent traces to pick one; `toUnixNano` normalises epoch ms/µs/ns to OTLP's uint64 nanosecond string.
+
+The API token needs the Workers Observability permission for the account.
 
 ## pprof rendering
 
@@ -81,6 +105,22 @@ node pprof-render/tools/cpuprofile-to-pprof.mjs cpu.cpuprofile cpu.pprof
 ```
 
 The pprof modules can also be imported directly from [`pprof-render/src/index.js`](./pprof-render/src/index.js), including `parseProfile`, `profileTable`, `flameGraph`, `summary`, and `renderFlamePNG`.
+
+## Repository layout
+
+The npm package contains only the root `otel-png*.mjs` modules plus license notices. Everything else is development support:
+
+| Path | What it is |
+| --- | --- |
+| `otel-png*.mjs` | The trace renderer (model, layout, raster, deflate, font, tracer), the Cloudflare adapter and the CLI. |
+| `pprof-render/` | The pprof renderer: decoder, aggregation, table and flame views, PNG encoder, the `bin/pprof-png.mjs` CLI, and Go profile fixtures with `go tool pprof` oracle output. Not part of the npm package. |
+| `worker-bench/` | A sample Cloudflare Worker that renders traces and profiles from Workers Observability; used by the local smoke test. Not production configuration. |
+| `eval/` | An optional research harness comparing PNG and JSON trace representations with a model; requires the `pi` CLI. See [`eval/README.md`](./eval/README.md). |
+| `examples/` | Ten synthetic traces of named performance pathologies, with their rendered PNGs. |
+| `demo/` | Deterministic stress renders (non-Latin names, 12 services, clock skew, microsecond spans, very long names) and a hero image of the renderer tracing itself. |
+| `self/` | Not tracked (gitignored): a local scratch directory for the renderer's own traces from `--trace`. |
+| `tools/` | Lint, smoke tests, benchmarks (`tools/bench.mjs`), example and font generators, profile capture. |
+| `test/` | `node:test` suites for the trace renderer, Cloudflare adapter, CLI, package exports and sample Worker (pprof tests live in `pprof-render/test/`). |
 
 ## Development
 
