@@ -3,11 +3,36 @@
 // https://github.com/google/pprof/blob/101d87ff5bc37124090081eb492825d9439a6a53/proto/profile.proto
 import { Reader, repeated } from './proto.js';
 
-const pipe = async (bytes, stream) =>
-  new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+// Inflated size cap: a small gzip member can expand ~1000x (a 194 KB bomb is 200 MB).
+export const MAX_INFLATED_BYTES = 64 * 2 ** 20;
 
-export const gunzip = (bytes) =>
-  bytes[0] === 0x1f && bytes[1] === 0x8b ? pipe(bytes, new DecompressionStream('gzip')) : Promise.resolve(bytes);
+/** gzip -> bytes, refusing more than maxBytes of output; non-gzip input is returned as is. */
+export async function gunzip(bytes, { maxBytes = MAX_INFLATED_BYTES } = {}) {
+  if (!(bytes[0] === 0x1f && bytes[1] === 0x8b)) return bytes;
+  const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip')).getReader();
+  const parts = [];
+  let size = 0;
+  for (;;) {
+    let step;
+    try {
+      step = await reader.read();
+    } catch (e) { // Node reports a truncated member as a TypeError with an empty message
+      const why = e?.message || e?.code || 'unexpected end of data';
+      throw new Error(`invalid or truncated gzip data (${why})`, { cause: e });
+    }
+    if (step.done) break;
+    size += step.value.length;
+    if (size > maxBytes) {
+      reader.cancel().catch(() => {});
+      throw new RangeError(`gzip data inflates to more than ${maxBytes} bytes`);
+    }
+    parts.push(step.value);
+  }
+  const out = new Uint8Array(size);
+  let o = 0;
+  for (const p of parts) { out.set(p, o); o += p.length; }
+  return out;
+}
 
 const uint = (r) => r.uint(), int = (r) => r.int(), key = (r) => r.key();
 
@@ -182,7 +207,7 @@ export function decodeProfile(bytes) {
   };
 }
 
-export const parseProfile = async (bytes) => decodeProfile(await gunzip(bytes));
+export const parseProfile = async (bytes, opts) => decodeProfile(await gunzip(bytes, opts));
 
 /** Index of the value column to show: by name, else default_sample_type, else the last (pprof's convention). */
 export function sampleIndex(p, name) {

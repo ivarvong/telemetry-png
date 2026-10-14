@@ -15,6 +15,18 @@ const SURFACE = 0xfcfcfb, INK = 0x0b0b0b, INK2 = 0x52514e, OTHER = 0xdddcd6, ROO
 const HUES = [0x2a78d6, 0xeb6834, 0x1baf7a, 0xeda100, 0xe87ba4, 0x008300, 0x6250d6]
   .map((c) => [16, 8, 0].reduce((o, s) => o | (Math.round(((c >> s) & 255) * 0.55 + 255 * 0.45) << s), 0));
 
+// A location line whose function link is 0 decodes to function index -1; such
+// frames are named and coloured as UNKNOWN instead of reading past the tables.
+export const UNKNOWN = '(unknown)';
+export const byFunction = (values) => Object.assign(values, { [-1]: UNKNOWN });
+
+/** Canvas size checks shared by the views; widths outside this range are refused, not clamped. */
+export const MIN_WIDTH = 320, MAX_WIDTH = 8192, MAX_HEIGHT = 32768;
+export function checkCanvas(width, maxHeight) {
+  if (typeof width !== 'number' || !Number.isInteger(width) || width < MIN_WIDTH || width > MAX_WIDTH) throw new RangeError(`width must be an integer from ${MIN_WIDTH} to ${MAX_WIDTH}, got ${String(width)}`);
+  if (typeof maxHeight !== 'number' || !(maxHeight > 0 && maxHeight <= MAX_HEIGHT)) throw new RangeError(`maxHeight must be a number from 1 to ${MAX_HEIGHT}, got ${String(maxHeight)}`);
+}
+
 /** Anthropic vision cost model: one token per 28x28 patch. */
 export const imageTokens = (w, h) => Math.ceil(w / 28) * Math.ceil(h / 28);
 
@@ -63,11 +75,12 @@ export function headline(p, st, total) {
 }
 
 export function flameGraph(p, { type, width = 2000, maxHeight = 1400, fontSize = 15, collapse = true, minChars = 3 } = {}) {
+  checkCanvas(width, maxHeight);
   const font = FONTS[fontSize];
   if (!font) throw new Error(`no baked font at ${fontSize}px (have ${Object.keys(FONTS).join(', ')})`);
   const vi = sampleIndex(p, type), st = p.sampleTypes[vi], trie = buildTrie(p, vi, { collapse }), total = trie.total[0];
   if (!(total > 0)) throw new Error(`profile has no positive ${st.type} samples`);
-  const names = p.functions.names.map(displayName), pkgs = p.functions.names.map(packageOf);
+  const names = byFunction(p.functions.names.map(displayName)), pkgs = byFunction(p.functions.names.map(packageOf));
 
   // Colour = package. The 7 heaviest by self value get a hue; the rest fold into "other".
   const selfByPkg = new Map();

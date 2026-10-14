@@ -2,11 +2,11 @@
 // pixels can only approximate. Meant to be sent to the model next to the PNG.
 import { buildTrie, top } from './aggregate.js';
 import { sampleIndex } from './profile.js';
-import { displayName, formatValue, headline, packageOf, pct } from './flame.js';
+import { byFunction, displayName, formatValue, headline, packageOf, pct } from './flame.js';
 
 export function summary(p, { type, collapse = true, topN = 25, treeMin = 0.01 } = {}) {
   const vi = sampleIndex(p, type), st = p.sampleTypes[vi], t = top(p, vi), trie = buildTrie(p, vi, { collapse });
-  const total = trie.total[0], names = p.functions.names.map(displayName), fmt = (v) => formatValue(v, st.unit), head = headline(p, st, total);
+  const total = trie.total[0], names = byFunction(p.functions.names.map(displayName)), fmt = (v) => formatValue(v, st.unit), head = headline(p, st, total);
   const out = [`${head.what}: ${head.facts}`, '', `Top ${topN} functions by self (cum = including callees, counted once per stack):`, '    self  self%        cum   cum%  function'];
   const order = [...t.flat.keys()].sort((a, b) => t.flat[b] - t.flat[a] || t.cum[b] - t.cum[a]).slice(0, topN);
   for (const f of order) out.push(`${fmt(t.flat[f]).padStart(8)} ${pct(t.flat[f], total).padStart(6)} ${fmt(t.cum[f]).padStart(10)} ${pct(t.cum[f], total).padStart(6)}  ${names[f]}`);

@@ -8,6 +8,7 @@ const [input, output, ...rest] = process.argv.slice(2);
 if (!input || !output) { console.error('usage: pprof-png in.pprof out.png [--view table|flame] [--text out.txt] [--type T] [--width N] [--max-height N] [--font N] [--no-collapse]'); process.exit(2); }
 const flag = (n) => { const i = rest.indexOf(`--${n}`); return i < 0 ? undefined : rest[i + 1]; };
 const t0 = performance.now(), collapse = !rest.includes('--no-collapse'), type = flag('type');
+process.on('uncaughtException', (e) => { console.error(`pprof-png: ${e?.message || e}`); process.exit(1); });
 const p = await parseProfile(readFileSync(input));
 const view = flag('view') ?? 'table', num = (n) => (flag(n) === undefined ? undefined : +flag(n));
 if (view !== 'table' && view !== 'flame') { console.error(`unknown --view ${view} (table | flame)`); process.exit(2); }

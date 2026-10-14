@@ -4,7 +4,7 @@
 import { FONTS } from './font.js';
 import { buildTrie, top, stackOf } from './aggregate.js';
 import { sampleIndex } from './profile.js';
-import { displayName, formatValue, imageTokens, packageOf, pct, shortName } from './flame.js';
+import { byFunction, checkCanvas, displayName, formatValue, imageTokens, packageOf, pct, shortName } from './flame.js';
 
 // Dark surface; hues are the dataviz reference categorical order, dark-mode steps.
 const BG = 0x000000, FG = 0xf0efec, DIM = 0x96958e, RULE = 0x5c5b56, OTHER = 0x77766f;
@@ -15,11 +15,12 @@ const clip = (s, n) => (s.length <= n ? s : n >= 2 ? s.slice(0, n - 1) + '…' :
 const fitName = (name, n) => (name.length <= n ? name : clip(shortName(name), n));
 
 export function profileTable(p, { type, width = 1600, maxHeight = 2000, fontSize = 15, collapse = true, topN = 8 } = {}) {
+  checkCanvas(width, maxHeight);
   const font = FONTS[fontSize];
   if (!font) throw new Error(`no baked font at ${fontSize}px (have ${Object.keys(FONTS).join(', ')})`);
   const vi = sampleIndex(p, type), st = p.sampleTypes[vi], trie = buildTrie(p, vi, { collapse }), t = top(p, vi), total = trie.total[0];
   if (!(total > 0)) throw new Error(`profile has no positive ${st.type} samples`);
-  const names = p.functions.names.map(displayName), pkgs = p.functions.names.map(packageOf), fmt = (v) => formatValue(v, st.unit);
+  const names = byFunction(p.functions.names.map(displayName)), pkgs = byFunction(p.functions.names.map(packageOf)), fmt = (v) => formatValue(v, st.unit);
 
   const byPkg = new Map();
   t.flat.forEach((v, f) => { if (v) byPkg.set(pkgs[f], (byPkg.get(pkgs[f]) ?? 0) + v); });
