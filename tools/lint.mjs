@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { findLeaks } from './leak-scan.mjs';
 
 const library = fs.readdirSync('.').filter((name) => /^otel-png.*\.mjs$/.test(name) && name !== 'otel-png-cli.mjs');
 const errors = [];
@@ -13,8 +15,10 @@ for (const required of ["head_sampling_rate = 1", "EXPENSIVE_RATE_LIMITER", "CF_
 }
 const fixtureText = fs.readFileSync('test/fixtures/cf-events.real.json', 'utf8');
 if (/authorization|cookie|api[_-]?token|secret/i.test(fixtureText)) errors.push('real fixture contains a credential-like key');
-for (const leaked of ['metar-cache-worker', 'aviationweather.gov', '16a8346e77d7a8ca4c6e929bf9fb755d', 'd631d905-56c8-4a2c-8311-98008e4b8c14']) {
-  if (fixtureText.includes(leaked)) errors.push(`real fixture contains unsanitized value: ${leaked}`);
+for (const hash of findLeaks(fixtureText)) errors.push(`real fixture contains an unsanitized value (sha256 ${hash.slice(0, 12)})`);
+const tracked = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' }).split('\0').filter((f) => f && !/\.(png|woff2?|pprof)$/.test(f) && fs.existsSync(f));
+for (const file of tracked) {
+  for (const hash of findLeaks(fs.readFileSync(file, 'utf8'))) errors.push(`${file}: contains an unsanitized value (sha256 ${hash.slice(0, 12)})`);
 }
 let fixture;
 try { fixture = JSON.parse(fixtureText); } catch (error) { errors.push(`real fixture is invalid JSON: ${error.message}`); }
@@ -46,4 +50,4 @@ if (fixture) {
   }
 }
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
-console.log(`lint: ${library.length} library modules, Worker safety controls, and sanitized fixture passed`);
+console.log(`lint: ${library.length} library modules, Worker safety controls, sanitized fixture, and ${tracked.length} tracked files passed`);
