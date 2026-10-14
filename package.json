@@ -2,6 +2,16 @@
   "name": "otel-png",
   "version": "0.1.0",
   "description": "Render OpenTelemetry traces as PNG pages. Pure JS, zero dependencies.",
+  "keywords": [
+    "opentelemetry",
+    "otlp",
+    "tracing",
+    "trace",
+    "png",
+    "visualization",
+    "cloudflare-workers",
+    "vision-model"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ivarvong/telemetry-png.git"
@@ -11,7 +21,14 @@
     "url": "https://github.com/ivarvong/telemetry-png/issues"
   },
   "type": "module",
-  "exports": "./otel-png.mjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./otel-png.mjs",
+    "./cloudflare": "./otel-png-cf.mjs",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "otel-png": "./otel-png-cli.mjs"
   },
