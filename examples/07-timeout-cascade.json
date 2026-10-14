@@ -1,0 +1,426 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "web"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000001",
+       "parentSpanId": "",
+       "name": "call api-gateway",
+       "startTimeUnixNano": "1760100000000000000",
+       "endTimeUnixNano": "1760100005000000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "5000"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "api-gateway"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 5000 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "api-gateway"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000002",
+       "parentSpanId": "0000000000000001",
+       "name": "call orders",
+       "startTimeUnixNano": "1760100000003000000",
+       "endTimeUnixNano": "1760100004753000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "4750"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "orders"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 4750 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "orders"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000003",
+       "parentSpanId": "0000000000000002",
+       "name": "call pricing",
+       "startTimeUnixNano": "1760100000006000000",
+       "endTimeUnixNano": "1760100004506000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "4500"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "pricing"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 4500 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "pricing"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000004",
+       "parentSpanId": "0000000000000003",
+       "name": "call promotions",
+       "startTimeUnixNano": "1760100000009000000",
+       "endTimeUnixNano": "1760100004259000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "4250"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "promotions"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 4250 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "promotions"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000005",
+       "parentSpanId": "0000000000000004",
+       "name": "call catalog",
+       "startTimeUnixNano": "1760100000012000000",
+       "endTimeUnixNano": "1760100004012000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "4000"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "catalog"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 4000 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "catalog"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000006",
+       "parentSpanId": "0000000000000005",
+       "name": "call inventory",
+       "startTimeUnixNano": "1760100000015000000",
+       "endTimeUnixNano": "1760100003765000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "3750"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "inventory"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 3750 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "inventory"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000007",
+       "parentSpanId": "0000000000000006",
+       "name": "call warehouse",
+       "startTimeUnixNano": "1760100000018000000",
+       "endTimeUnixNano": "1760100003518000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "3500"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "warehouse"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 3500 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "warehouse"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000008",
+       "parentSpanId": "0000000000000007",
+       "name": "call legacy-erp",
+       "startTimeUnixNano": "1760100000021000000",
+       "endTimeUnixNano": "1760100003271000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "3250"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "legacy-erp"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "deadline exceeded after 3250 ms"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "legacy-erp"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "0000000000000009",
+       "parentSpanId": "0000000000000008",
+       "name": "SOAP GetStock",
+       "startTimeUnixNano": "1760100000024000000",
+       "endTimeUnixNano": "1760100008000000000",
+       "attributes": [
+        {
+         "key": "timeout_ms",
+         "value": {
+          "intValue": "30000"
+         }
+        },
+        {
+         "key": "peer.service",
+         "value": {
+          "stringValue": "erp-db"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "2fcd0ac92fcd0ac92fcd0ac92fcd0ac9",
+       "spanId": "000000000000000a",
+       "parentSpanId": "0000000000000009",
+       "name": "SELECT stock (full table scan)",
+       "startTimeUnixNano": "1760100000028000000",
+       "endTimeUnixNano": "1760100007998000000",
+       "attributes": [
+        {
+         "key": "db.system",
+         "value": {
+          "stringValue": "oracle"
+         }
+        },
+        {
+         "key": "db.rows_examined",
+         "value": {
+          "intValue": "18400112"
+         }
+        },
+        {
+         "key": "index.used",
+         "value": {
+          "stringValue": "none"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

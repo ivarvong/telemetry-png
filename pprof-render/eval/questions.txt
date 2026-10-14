@@ -1,0 +1,10 @@
+Q1. What is the total CPU time in the profile?
+Q2. Which single function has the most SELF time (excluding callees), and what percent of total is its self time?
+Q3. What percent of total is runtime.gcBgMarkWorker, including callees?
+Q4. Which two functions call runtime.gcDrain, and what percent of total does each account for?
+Q5. Under runtime.gcDrainMarkWorkerIdle, what are the three largest direct callees of runtime.scanobject, with their percent of total?
+Q6. What is the cumulative percent of total for encoding/json.cachedTypeFields (all call paths)?
+Q7. What is the SELF percent of total for runtime.(*gcBits).bitp (all call paths)?
+Q8. What percent of total is NOT under runtime.gcBgMarkWorker?
+Q9. Under runtime.gcDrainMarkWorkerIdle, what is the largest direct callee of runtime.greyobject, with its percent of total?
+Q10. What percent of total self time is in the encoding/json package?

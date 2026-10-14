@@ -1,0 +1,69 @@
+File: json.test
+Build ID: 0ea318d70b7f04478ca966780a61893ec899a1a9
+Type: alloc_space
+Time: 2026-10-10 15:20:25 EDT
+Showing nodes accounting for 7306.76MB, 96.56% of 7566.94MB total
+Dropped 79 nodes (cum <= 37.83MB)
+      flat  flat%   sum%        cum   cum%
+ 3013.92MB 39.83% 39.83%  3090.42MB 40.84%  encoding/json.typeFields
+ 1417.69MB 18.74% 58.57%  1687.23MB 22.30%  encoding/json.Unmarshal
+ 1179.30MB 15.58% 74.15%  1382.13MB 18.27%  encoding/json.Marshal
+  291.04MB  3.85% 78.00%   291.04MB  3.85%  internal/sync.newIndirectNode[go.shape.interface {},go.shape.interface {}] (inline)
+  218.51MB  2.89% 80.88%   218.51MB  2.89%  internal/sync.newEntryNode[go.shape.interface {},go.shape.interface {}] (inline)
+  166.51MB  2.20% 83.08%  3659.97MB 48.37%  encoding/json.cachedTypeFields
+  165.51MB  2.19% 85.27%   577.62MB  7.63%  reflect.StructOf
+  150.09MB  1.98% 87.26%   150.09MB  1.98%  reflect.addReflectOff
+  112.13MB  1.48% 88.74%   161.13MB  2.13%  encoding/json.(*decodeState).literalStore
+  102.01MB  1.35% 90.09%   159.51MB  2.11%  encoding/json.mapEncoder.encode
+   76.50MB  1.01% 91.10%    76.50MB  1.01%  encoding/json.appendHTMLEscape
+   75.50MB     1% 92.09%    75.50MB     1%  encoding/json.(*scanner).pushParseState
+      72MB  0.95% 93.05%       72MB  0.95%  reflect.New
+   70.50MB  0.93% 93.98%    70.50MB  0.93%  internal/abi.NewName
+   57.50MB  0.76% 94.74%    57.50MB  0.76%  reflect.copyVal
+   54.95MB  0.73% 95.46%    54.95MB  0.73%  bytes.growSlice
+   43.50MB  0.57% 96.04%   150.01MB  1.98%  reflect.StructOf.func1
+   24.27MB  0.32% 96.36%  1668.52MB 22.05%  encoding/json.BenchmarkTypeFieldsCache
+    9.82MB  0.13% 96.49%    63.46MB  0.84%  encoding/json.BenchmarkDecoderStream
+    5.50MB 0.073% 96.56%   154.04MB  2.04%  encoding/json.(*decodeState).object
+         0     0% 96.56%    40.56MB  0.54%  bytes.(*Buffer).WriteString
+         0     0% 96.56%    54.95MB  0.73%  bytes.(*Buffer).grow
+         0     0% 96.56%   115.77MB  1.53%  encoding/json.(*Decoder).Decode
+         0     0% 96.56%   107.04MB  1.41%  encoding/json.(*decodeState).array
+         0     0% 96.56%   279.17MB  3.69%  encoding/json.(*decodeState).unmarshal
+         0     0% 96.56%   279.17MB  3.69%  encoding/json.(*decodeState).value
+         0     0% 96.56%   229.47MB  3.03%  encoding/json.(*encodeState).marshal
+         0     0% 96.56%   229.47MB  3.03%  encoding/json.(*encodeState).reflectValue
+         0     0% 96.56%    51.86MB  0.69%  encoding/json.BenchmarkCodeDecoder.func1
+         0     0% 96.56%   177.32MB  2.34%  encoding/json.BenchmarkCodeMarshal.func1
+         0     0% 96.56%   222.91MB  2.95%  encoding/json.BenchmarkCodeMarshalError.func1
+         0     0% 96.56%    60.02MB  0.79%  encoding/json.BenchmarkCodeUnmarshal.func1
+         0     0% 96.56%   165.02MB  2.18%  encoding/json.BenchmarkIssue10335.func1
+         0     0% 96.56%    85.50MB  1.13%  encoding/json.BenchmarkIssue34127.func1
+         0     0% 96.56%   181.01MB  2.39%  encoding/json.BenchmarkMarshalMap.func1
+         0     0% 96.56%  2615.34MB 34.56%  encoding/json.BenchmarkTypeFieldsCache.func2.1
+         0     0% 96.56%   112.51MB  1.49%  encoding/json.BenchmarkUnmapped.func1
+         0     0% 96.56%   452.06MB  5.97%  encoding/json.BenchmarkUnmarshalFloat64.func1
+         0     0% 96.56%   140.02MB  1.85%  encoding/json.BenchmarkUnmarshalInt64.func1
+         0     0% 96.56%   127.51MB  1.69%  encoding/json.BenchmarkUnmarshalMap.func1
+         0     0% 96.56%   156.52MB  2.07%  encoding/json.BenchmarkUnmarshalNumber
+         0     0% 96.56%   449.56MB  5.94%  encoding/json.BenchmarkUnmarshalString.func1
+         0     0% 96.56%    40.95MB  0.54%  encoding/json.arrayEncoder.encode
+         0     0% 96.56%   694.75MB  9.18%  encoding/json.benchMarshalBytes.func1
+         0     0% 96.56%    75.50MB     1%  encoding/json.checkValid
+         0     0% 96.56%    69.95MB  0.92%  encoding/json.ptrEncoder.encode
+         0     0% 96.56%    40.95MB  0.54%  encoding/json.sliceEncoder.encode
+         0     0% 96.56%    75.50MB     1%  encoding/json.stateBeginValue
+         0     0% 96.56%    69.95MB  0.92%  encoding/json.structEncoder.encode
+         0     0% 96.56%    40.95MB  0.54%  encoding/json.typeEncoder.func1
+         0     0% 96.56%   384.04MB  5.08%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).LoadOrStore
+         0     0% 96.56%   106.51MB  1.41%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Store (inline)
+         0     0% 96.56%   106.51MB  1.41%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Swap
+         0     0% 96.56%   272.04MB  3.60%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).expand
+         0     0% 96.56%    70.50MB  0.93%  reflect.newName (inline)
+         0     0% 96.56%   150.09MB  1.98%  reflect.resolveReflectName (inline)
+         0     0% 96.56%   384.04MB  5.08%  sync.(*Map).LoadOrStore (inline)
+         0     0% 96.56%   106.51MB  1.41%  sync.(*Map).Store (inline)
+         0     0% 96.56%  2275.46MB 30.07%  testing.(*B).RunParallel.func1
+         0     0% 96.56%   974.67MB 12.88%  testing.(*B).launch
+         0     0% 96.56%  1694.87MB 22.40%  testing.(*B).run1.func1
+         0     0% 96.56%  2670.05MB 35.29%  testing.(*B).runN

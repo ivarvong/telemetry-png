@@ -1,0 +1,432 @@
+{
+  "real": true,
+  "capturedAt": "2023-11-14T22:14:00.000Z",
+  "summary": {
+    "traceId": "0123456789abcdef0123456789abcdef",
+    "services": [
+      "fixture-worker"
+    ],
+    "traceStartMs": 1700000000000,
+    "traceEndMs": 1700000002300,
+    "traceDurationMs": 2300,
+    "spans": 5,
+    "errors": [],
+    "rootSpanName": "scheduled",
+    "rootTransactionName": "scheduled",
+    "id": "01HF7YAT000000000000000001"
+  },
+  "events": {
+    "events": [
+      {
+        "dataset": "otel",
+        "timestamp": 1700000001700,
+        "$metadata": {
+          "id": "01HF7YAT000000000000000005",
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000005",
+          "parentSpanId": "0000000000000001",
+          "startTime": 1700000001700,
+          "startTimeNs": "1700000001700000000",
+          "endTime": 1700000002300,
+          "endTimeNs": "1700000002300000000",
+          "service": "fixture-worker",
+          "spanName": "r2_put",
+          "type": "span"
+        },
+        "source": {
+          "cloudflare": {
+            "r2": {
+              "response": {
+                "success": true,
+                "custom_metadata": true,
+                "etag": "00000000000000000000000000000001",
+                "uploaded": "2023-11-14T22:13:00.000Z",
+                "checksum": {
+                  "md5": "00000000000000000000000000000001"
+                },
+                "storage_class": "Standard",
+                "content_type": "application/json",
+                "size": 1000
+              },
+              "operation": "PutObject",
+              "request": {
+                "key": "synthetic-object-1.bin",
+                "http_metadata": {
+                  "content_type": "application/json"
+                },
+                "size": 1000
+              }
+            },
+            "binding": {
+              "type": "r2"
+            },
+            "colo": "SJC",
+            "script_name": "fixture-worker",
+            "script_version": {
+              "id": "00000000-0000-4000-8000-000000000001"
+            },
+            "invocation": {
+              "sequence": {
+                "number": 10
+              }
+            }
+          },
+          "scope": {
+            "name": "workers-observability"
+          },
+          "faas": {
+            "invoked_region": "WNAM",
+            "name": "fixture-worker",
+            "version": "00000000-0000-4000-8000-000000000001"
+          },
+          "cloud": {
+            "provider": "cloudflare",
+            "platform": "cloudflare.workers"
+          },
+          "telemetry": {
+            "sdk": {
+              "language": "js",
+              "name": "workers-observability"
+            }
+          },
+          "service": {
+            "name": "fixture-worker"
+          },
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000005",
+          "parentSpanId": "0000000000000001",
+          "name": "r2_put",
+          "startTime": 1700000001700,
+          "endTime": 1700000002300,
+          "durationMS": 600
+        }
+      },
+      {
+        "dataset": "otel",
+        "timestamp": 1700000001100,
+        "$metadata": {
+          "id": "01HF7YAT000000000000000004",
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000004",
+          "parentSpanId": "0000000000000001",
+          "startTime": 1700000001100,
+          "startTimeNs": "1700000001100000000",
+          "endTime": 1700000001700,
+          "endTimeNs": "1700000001700000000",
+          "service": "fixture-worker",
+          "spanName": "r2_put",
+          "type": "span"
+        },
+        "source": {
+          "cloudflare": {
+            "r2": {
+              "request": {
+                "custom_metadata": true,
+                "key": "synthetic-object-2.bin",
+                "http_metadata": {
+                  "content_type": "text/csv",
+                  "content_encoding": "gzip",
+                  "cache_control": "max-age=10"
+                },
+                "size": 1001
+              },
+              "response": {
+                "success": true,
+                "custom_metadata": true,
+                "etag": "00000000000000000000000000000002",
+                "uploaded": "2023-11-14T22:13:01.000Z",
+                "checksum": {
+                  "md5": "00000000000000000000000000000002"
+                },
+                "storage_class": "Standard",
+                "content_type": "text/csv",
+                "content_encoding": "gzip",
+                "cache_control": "max-age=10",
+                "size": 1001
+              },
+              "operation": "PutObject"
+            },
+            "binding": {
+              "type": "r2"
+            },
+            "colo": "SJC",
+            "script_name": "fixture-worker",
+            "script_version": {
+              "id": "00000000-0000-4000-8000-000000000001"
+            },
+            "invocation": {
+              "sequence": {
+                "number": 11
+              }
+            }
+          },
+          "scope": {
+            "name": "workers-observability"
+          },
+          "faas": {
+            "invoked_region": "WNAM",
+            "name": "fixture-worker",
+            "version": "00000000-0000-4000-8000-000000000001"
+          },
+          "cloud": {
+            "provider": "cloudflare",
+            "platform": "cloudflare.workers"
+          },
+          "telemetry": {
+            "sdk": {
+              "language": "js",
+              "name": "workers-observability"
+            }
+          },
+          "service": {
+            "name": "fixture-worker"
+          },
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000004",
+          "parentSpanId": "0000000000000001",
+          "name": "r2_put",
+          "startTime": 1700000001100,
+          "endTime": 1700000001700,
+          "durationMS": 600
+        }
+      },
+      {
+        "dataset": "otel",
+        "timestamp": 1700000000500,
+        "$metadata": {
+          "id": "01HF7YAT000000000000000003",
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000003",
+          "parentSpanId": "0000000000000001",
+          "startTime": 1700000000500,
+          "startTimeNs": "1700000000500000000",
+          "endTime": 1700000001100,
+          "endTimeNs": "1700000001100000000",
+          "service": "fixture-worker",
+          "spanName": "r2_put",
+          "type": "span"
+        },
+        "source": {
+          "cloudflare": {
+            "r2": {
+              "request": {
+                "custom_metadata": true,
+                "key": "synthetic-object-3.bin",
+                "http_metadata": {
+                  "content_type": "text/csv",
+                  "content_encoding": "gzip",
+                  "cache_control": "max-age=10"
+                },
+                "size": 1002
+              },
+              "response": {
+                "success": true,
+                "custom_metadata": true,
+                "etag": "00000000000000000000000000000003",
+                "uploaded": "2023-11-14T22:13:02.000Z",
+                "checksum": {
+                  "md5": "00000000000000000000000000000003"
+                },
+                "storage_class": "Standard",
+                "content_type": "text/csv",
+                "content_encoding": "gzip",
+                "cache_control": "max-age=10",
+                "size": 1002
+              },
+              "operation": "PutObject"
+            },
+            "binding": {
+              "type": "r2"
+            },
+            "colo": "SJC",
+            "script_name": "fixture-worker",
+            "script_version": {
+              "id": "00000000-0000-4000-8000-000000000001"
+            },
+            "invocation": {
+              "sequence": {
+                "number": 12
+              }
+            }
+          },
+          "scope": {
+            "name": "workers-observability"
+          },
+          "faas": {
+            "invoked_region": "WNAM",
+            "name": "fixture-worker",
+            "version": "00000000-0000-4000-8000-000000000001"
+          },
+          "cloud": {
+            "provider": "cloudflare",
+            "platform": "cloudflare.workers"
+          },
+          "telemetry": {
+            "sdk": {
+              "language": "js",
+              "name": "workers-observability"
+            }
+          },
+          "service": {
+            "name": "fixture-worker"
+          },
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000003",
+          "parentSpanId": "0000000000000001",
+          "name": "r2_put",
+          "startTime": 1700000000500,
+          "endTime": 1700000001100,
+          "durationMS": 600
+        }
+      },
+      {
+        "dataset": "otel",
+        "timestamp": 1700000000000,
+        "$metadata": {
+          "id": "01HF7YAT000000000000000002",
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000002",
+          "parentSpanId": "0000000000000001",
+          "startTime": 1700000000000,
+          "startTimeNs": "1700000000000000000",
+          "endTime": 1700000000300,
+          "endTimeNs": "1700000000300000000",
+          "service": "fixture-worker",
+          "spanName": "fetch",
+          "type": "span"
+        },
+        "source": {
+          "network": {
+            "protocol": {
+              "name": "http",
+              "version": "HTTP/2"
+            }
+          },
+          "http": {
+            "request": {
+              "method": "GET"
+            },
+            "response": {
+              "status_code": 204,
+              "body": {
+                "size": 4321
+              }
+            }
+          },
+          "cloudflare": {
+            "ray_id": "0000000000000000-SJC",
+            "colo": "SJC",
+            "script_name": "fixture-worker",
+            "script_version": {
+              "id": "00000000-0000-4000-8000-000000000001"
+            },
+            "invocation": {
+              "sequence": {
+                "number": 13
+              }
+            }
+          },
+          "server": {
+            "port": "443",
+            "address": "origin.example.invalid"
+          },
+          "scope": {
+            "name": "workers-observability"
+          },
+          "faas": {
+            "invoked_region": "WNAM",
+            "name": "fixture-worker",
+            "version": "00000000-0000-4000-8000-000000000001"
+          },
+          "cloud": {
+            "provider": "cloudflare",
+            "platform": "cloudflare.workers"
+          },
+          "telemetry": {
+            "sdk": {
+              "language": "js",
+              "name": "workers-observability"
+            }
+          },
+          "service": {
+            "name": "fixture-worker"
+          },
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000002",
+          "parentSpanId": "0000000000000001",
+          "name": "fetch",
+          "startTime": 1700000000000,
+          "endTime": 1700000000300,
+          "durationMS": 300
+        }
+      },
+      {
+        "dataset": "otel",
+        "timestamp": 1700000000000,
+        "$metadata": {
+          "id": "01HF7YAT000000000000000001",
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000001",
+          "startTime": 1700000000000,
+          "startTimeNs": "1700000000000000000",
+          "endTime": 1700000002300,
+          "endTimeNs": "1700000002300000000",
+          "service": "fixture-worker",
+          "spanName": "scheduled",
+          "type": "span"
+        },
+        "source": {
+          "cloudflare": {
+            "execution_model": "stateless",
+            "handler_type": "scheduled",
+            "ray_id": "0000000000000000-SJC",
+            "scheduled_time": "2023-11-14T22:13:00.000Z",
+            "outcome": "ok",
+            "colo": "SJC",
+            "script_name": "fixture-worker",
+            "script_version": {
+              "id": "00000000-0000-4000-8000-000000000001"
+            },
+            "invocation": {
+              "sequence": {
+                "number": 14
+              }
+            }
+          },
+          "faas": {
+            "invocation_id": "00000000000000000000000000000001",
+            "trigger": "timer",
+            "cron": "* * * * *",
+            "invoked_region": "WNAM",
+            "name": "fixture-worker",
+            "version": "00000000-0000-4000-8000-000000000001"
+          },
+          "scope": {
+            "name": "workers-observability"
+          },
+          "cloud": {
+            "provider": "cloudflare",
+            "platform": "cloudflare.workers"
+          },
+          "telemetry": {
+            "sdk": {
+              "language": "js",
+              "name": "workers-observability"
+            }
+          },
+          "service": {
+            "name": "fixture-worker"
+          },
+          "traceId": "0123456789abcdef0123456789abcdef",
+          "spanId": "0000000000000001",
+          "name": "scheduled",
+          "cpu_time_ms": 123,
+          "wall_time_ms": 2345,
+          "startTime": 1700000000000,
+          "endTime": 1700000002300,
+          "durationMS": 2300
+        }
+      }
+    ]
+  }
+}

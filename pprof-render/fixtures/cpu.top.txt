@@ -1,0 +1,83 @@
+File: json.test
+Build ID: 0ea318d70b7f04478ca966780a61893ec899a1a9
+Type: cpu
+Time: 2026-10-10 15:18:31 EDT
+Duration: 111.31s, Total samples = 209.83s (188.50%)
+Showing nodes accounting for 183.79s, 87.59% of 209.83s total
+Dropped 619 nodes (cum <= 1.05s)
+      flat  flat%   sum%        cum   cum%
+    50.92s 24.27% 24.27%    172.19s 82.06%  runtime.scanobject
+    49.85s 23.76% 48.02%     53.90s 25.69%  runtime.findObject
+    22.34s 10.65% 58.67%     22.35s 10.65%  runtime.(*gcBits).bitp (inline)
+    17.19s  8.19% 66.86%     17.58s  8.38%  runtime.(*mspan).heapBitsSmallForAddr
+    10.53s  5.02% 71.88%     10.53s  5.02%  runtime.(*mspan).base (inline)
+     6.69s  3.19% 75.07%      6.69s  3.19%  runtime.(*gcWork).putFast (inline)
+     2.98s  1.42% 76.49%     45.26s 21.57%  runtime.greyobject
+     2.32s  1.11% 77.60%      4.56s  2.17%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Load
+     2.16s  1.03% 78.63%    172.13s 82.03%  runtime.gcDrain
+        2s  0.95% 79.58%      2.13s  1.02%  runtime.spanOf (inline)
+     1.74s  0.83% 80.41%      1.74s  0.83%  runtime.typePointers.nextFast (inline)
+     1.63s  0.78% 81.18%      1.63s  0.78%  runtime.markBits.isMarked (inline)
+     1.59s  0.76% 81.94%      2.15s  1.02%  runtime.pageIndexOf (inline)
+     1.44s  0.69% 82.63%      1.44s  0.69%  runtime.memclrNoHeapPointers
+     1.30s  0.62% 83.25%     13.29s  6.33%  encoding/json.cachedTypeFields
+     1.17s  0.56% 83.81%      1.21s  0.58%  runtime.typePointers.next
+     1.07s  0.51% 84.32%      1.07s  0.51%  runtime.arenaIndex (inline)
+     0.84s   0.4% 84.72%     18.42s  8.78%  runtime.(*mspan).typePointersOfUnchecked
+     0.66s  0.31% 85.03%      5.33s  2.54%  encoding/json.structEncoder.encode
+     0.66s  0.31% 85.35%      2.42s  1.15%  runtime.(*sweepLocked).sweep
+     0.65s  0.31% 85.66%      5.28s  2.52%  runtime.sweepone
+     0.55s  0.26% 85.92%      1.18s  0.56%  runtime.nilinterhash
+     0.42s   0.2% 86.12%      8.08s  3.85%  runtime.mallocgc
+     0.37s  0.18% 86.29%      1.16s  0.55%  encoding/json.checkValid
+     0.36s  0.17% 86.47%      3.14s  1.50%  runtime.mallocgcSmallScanNoHeader
+     0.32s  0.15% 86.62%      7.04s  3.36%  encoding/json.typeFields
+     0.27s  0.13% 86.75%      2.50s  1.19%  encoding/json.(*decodeState).object
+     0.20s 0.095% 86.84%      4.21s  2.01%  encoding/json.BenchmarkTypeFieldsCache.func3.1
+     0.14s 0.067% 86.91%      1.66s  0.79%  encoding/json.(*decodeState).literalStore
+     0.14s 0.067% 86.98%      2.99s  1.42%  reflect.StructOf
+     0.11s 0.052% 87.03%      1.76s  0.84%  runtime.growslice
+     0.10s 0.048% 87.08%      3.68s  1.75%  encoding/json.(*decodeState).value
+     0.10s 0.048% 87.12%      5.38s  2.56%  encoding/json.ptrEncoder.encode
+     0.09s 0.043% 87.17%      2.38s  1.13%  encoding/json.(*Encoder).Encode
+     0.08s 0.038% 87.20%      3.65s  1.74%  encoding/json.typeEncoder.func1
+     0.08s 0.038% 87.24%      4.64s  2.21%  sync.(*Map).Load (inline)
+     0.07s 0.033% 87.28%      2.86s  1.36%  encoding/json.arrayEncoder.encode
+     0.06s 0.029% 87.30%      2.92s  1.39%  encoding/json.Marshal
+     0.06s 0.029% 87.33%      2.02s  0.96%  runtime.mapassign_faststr
+     0.05s 0.024% 87.36%      3.95s  1.88%  encoding/json.(*decodeState).unmarshal
+     0.05s 0.024% 87.38%      1.46s   0.7%  runtime.(*mcache).nextFree
+     0.05s 0.024% 87.40%      1.34s  0.64%  runtime.(*mcache).refill
+     0.05s 0.024% 87.43%     22.40s 10.68%  runtime.(*mspan).markBitsForIndex (inline)
+     0.04s 0.019% 87.45%      4.67s  2.23%  encoding/json.(*encodeState).marshal
+     0.04s 0.019% 87.47%      4.65s  2.22%  encoding/json.(*encodeState).reflectValue
+     0.03s 0.014% 87.48%      1.10s  0.52%  runtime.(*mcentral).cacheSpan
+     0.03s 0.014% 87.49%      3.13s  1.49%  runtime.deductAssistCredit
+     0.03s 0.014% 87.51%      3.09s  1.47%  runtime.gcDrainN
+     0.03s 0.014% 87.52%      2.68s  1.28%  runtime.newobject
+     0.02s 0.0095% 87.53%      1.45s  0.69%  encoding/json.(*decodeState).array
+     0.02s 0.0095% 87.54%      4.92s  2.34%  encoding/json.Unmarshal
+     0.02s 0.0095% 87.55%      1.28s  0.61%  runtime.(*mheap).nextSpanForSweep
+     0.01s 0.0048% 87.56%      6.24s  2.97%  encoding/json.BenchmarkTypeFieldsCache
+     0.01s 0.0048% 87.56%      6.35s  3.03%  encoding/json.BenchmarkTypeFieldsCache.func2.1
+     0.01s 0.0048% 87.57%      2.86s  1.36%  encoding/json.sliceEncoder.encode
+     0.01s 0.0048% 87.57%      1.72s  0.82%  internal/runtime/maps.(*Map).growToSmall
+     0.01s 0.0048% 87.58%      2.97s  1.42%  runtime.bgsweep
+     0.01s 0.0048% 87.58%      3.10s  1.48%  runtime.gcAssistAlloc
+     0.01s 0.0048% 87.59%      1.78s  0.85%  runtime.newarray
+     0.01s 0.0048% 87.59%    177.05s 84.38%  runtime.systemstack
+         0     0% 87.59%      1.34s  0.64%  encoding/json.(*Decoder).Decode
+         0     0% 87.59%      1.78s  0.85%  internal/runtime/maps.newGroups (inline)
+         0     0% 87.59%      1.78s  0.85%  internal/runtime/maps.newarray
+         0     0% 87.59%      2.35s  1.12%  runtime.GC
+         0     0% 87.59%      3.09s  1.47%  runtime.gcAssistAlloc.func2
+         0     0% 87.59%      3.09s  1.47%  runtime.gcAssistAlloc1
+         0     0% 87.59%    172.16s 82.05%  runtime.gcBgMarkWorker
+         0     0% 87.59%    172.13s 82.03%  runtime.gcBgMarkWorker.func2
+         0     0% 87.59%     44.98s 21.44%  runtime.gcDrainMarkWorkerFractional (inline)
+         0     0% 87.59%    127.15s 60.60%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 87.59%      1.05s   0.5%  runtime.mcall
+         0     0% 87.59%     13.34s  6.36%  testing.(*B).RunParallel.func1
+         0     0% 87.59%      4.15s  1.98%  testing.(*B).launch
+         0     0% 87.59%      7.05s  3.36%  testing.(*B).run1.func1
+         0     0% 87.59%     11.21s  5.34%  testing.(*B).runN

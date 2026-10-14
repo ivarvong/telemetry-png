@@ -1,0 +1,39 @@
+{
+  "name": "otel-png",
+  "version": "0.1.0",
+  "description": "Render OpenTelemetry traces as PNG pages. Pure JS, zero dependencies.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivarvong/telemetry-png.git"
+  },
+  "homepage": "https://github.com/ivarvong/telemetry-png#readme",
+  "bugs": {
+    "url": "https://github.com/ivarvong/telemetry-png/issues"
+  },
+  "type": "module",
+  "exports": "./otel-png.mjs",
+  "bin": {
+    "otel-png": "./otel-png-cli.mjs"
+  },
+  "files": [
+    "otel-png*.mjs",
+    "THIRD_PARTY_NOTICES.md",
+    "pprof-render/third_party/commit-mono/LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "node --check otel-png-cf.mjs && node --check worker-bench/worker.mjs && node --check worker-bench/app-helpers.mjs && node --check worker-bench/profile-artifacts.mjs && node --check pprof-render/tools/cpuprofile-to-pprof.mjs && node --check tools/cf-capture.mjs && node --check tools/smoke.mjs",
+    "lint": "node tools/lint.mjs",
+    "test": "node --expose-gc --test test/*.test.mjs pprof-render/test/*.test.mjs",
+    "smoke:local": "bash tools/local-smoke.sh",
+    "smoke": "node tools/smoke.mjs",
+    "check:core": "npm run typecheck && npm run lint && npm test",
+    "check": "npm run check:core && npm run smoke:local",
+    "deploy": "cd worker-bench && env -u CLOUDFLARE_API_TOKEN npx --no-install wrangler deploy",
+    "golden": "UPDATE_GOLDEN=1 node --expose-gc --test test/png.test.mjs",
+    "font": "python3 tools/build-font.py fonts otel-png-font.mjs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "4.151.0"
+  }
+}

@@ -1,0 +1,258 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "edge"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000001",
+       "parentSpanId": "",
+       "name": "GET /api/user",
+       "startTimeUnixNano": "1760100000000000000",
+       "endTimeUnixNano": "1760100000412000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        },
+        {
+         "key": "cold_start",
+         "value": {
+          "stringValue": "true"
+         }
+        },
+        {
+         "key": "colo",
+         "value": {
+          "stringValue": "ORD"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "runtime"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000002",
+       "parentSpanId": "0000000000000001",
+       "name": "isolate startup",
+       "startTimeUnixNano": "1760100000000400000",
+       "endTimeUnixNano": "1760100000388000000",
+       "attributes": [
+        {
+         "key": "script.bytes",
+         "value": {
+          "intValue": "4812331"
+         }
+        },
+        {
+         "key": "compat.date",
+         "value": {
+          "stringValue": "2026-09-01"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000003",
+       "parentSpanId": "0000000000000002",
+       "name": "fetch script bundle",
+       "startTimeUnixNano": "1760100000000600000",
+       "endTimeUnixNano": "1760100000096000000",
+       "attributes": [
+        {
+         "key": "cache.hit",
+         "value": {
+          "stringValue": "false"
+         }
+        },
+        {
+         "key": "bytes",
+         "value": {
+          "intValue": "4812331"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000004",
+       "parentSpanId": "0000000000000002",
+       "name": "parse + compile",
+       "startTimeUnixNano": "1760100000096000000",
+       "endTimeUnixNano": "1760100000301000000",
+       "attributes": [
+        {
+         "key": "modules",
+         "value": {
+          "intValue": "1184"
+         }
+        },
+        {
+         "key": "bytes",
+         "value": {
+          "intValue": "4812331"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000005",
+       "parentSpanId": "0000000000000002",
+       "name": "evaluate top-level",
+       "startTimeUnixNano": "1760100000301000000",
+       "endTimeUnixNano": "1760100000387000000",
+       "attributes": [
+        {
+         "key": "modules",
+         "value": {
+          "intValue": "1184"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000006",
+       "parentSpanId": "0000000000000005",
+       "name": "init orm schema",
+       "startTimeUnixNano": "1760100000304000000",
+       "endTimeUnixNano": "1760100000361000000",
+       "attributes": [
+        {
+         "key": "tables",
+         "value": {
+          "intValue": "212"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000007",
+       "parentSpanId": "0000000000000005",
+       "name": "init i18n catalogs",
+       "startTimeUnixNano": "1760100000361000000",
+       "endTimeUnixNano": "1760100000384000000",
+       "attributes": [
+        {
+         "key": "locales",
+         "value": {
+          "intValue": "38"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "app"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000008",
+       "parentSpanId": "0000000000000001",
+       "name": "handler",
+       "startTimeUnixNano": "1760100000388500000",
+       "endTimeUnixNano": "1760100000411000000",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "kv"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "34408afb34408afb34408afb34408afb",
+       "spanId": "0000000000000009",
+       "parentSpanId": "0000000000000008",
+       "name": "KV get user:812",
+       "startTimeUnixNano": "1760100000389000000",
+       "endTimeUnixNano": "1760100000409000000",
+       "attributes": [
+        {
+         "key": "kv.hit",
+         "value": {
+          "stringValue": "true"
+         }
+        },
+        {
+         "key": "bytes",
+         "value": {
+          "intValue": "912"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

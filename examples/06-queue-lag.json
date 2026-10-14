@@ -1,0 +1,236 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "api"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000001",
+       "parentSpanId": "",
+       "name": "POST /videos",
+       "startTimeUnixNano": "1760100000000000000",
+       "endTimeUnixNano": "1760100000048000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "202"
+         }
+        },
+        {
+         "key": "video.id",
+         "value": {
+          "stringValue": "v_5512"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000002",
+       "parentSpanId": "0000000000000001",
+       "name": "store upload",
+       "startTimeUnixNano": "1760100000002000000",
+       "endTimeUnixNano": "1760100000038000000",
+       "attributes": [
+        {
+         "key": "bytes",
+         "value": {
+          "intValue": "81234112"
+         }
+        },
+        {
+         "key": "r2.bucket",
+         "value": {
+          "stringValue": "uploads"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000003",
+       "parentSpanId": "0000000000000001",
+       "name": "enqueue transcode",
+       "startTimeUnixNano": "1760100000039000000",
+       "endTimeUnixNano": "1760100000046000000",
+       "attributes": [
+        {
+         "key": "messaging.system",
+         "value": {
+          "stringValue": "queues"
+         }
+        },
+        {
+         "key": "queue",
+         "value": {
+          "stringValue": "transcode"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "transcoder"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000004",
+       "parentSpanId": "0000000000000003",
+       "name": "process transcode",
+       "startTimeUnixNano": "1760100004310000000",
+       "endTimeUnixNano": "1760100009420000000",
+       "attributes": [
+        {
+         "key": "messaging.lag_ms",
+         "value": {
+          "intValue": "4264"
+         }
+        },
+        {
+         "key": "queue.depth",
+         "value": {
+          "intValue": "912"
+         }
+        },
+        {
+         "key": "consumer.concurrency",
+         "value": {
+          "intValue": "2"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000005",
+       "parentSpanId": "0000000000000004",
+       "name": "download source",
+       "startTimeUnixNano": "1760100004312000000",
+       "endTimeUnixNano": "1760100004790000000",
+       "attributes": [
+        {
+         "key": "bytes",
+         "value": {
+          "intValue": "81234112"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000006",
+       "parentSpanId": "0000000000000004",
+       "name": "ffmpeg 1080p",
+       "startTimeUnixNano": "1760100004792000000",
+       "endTimeUnixNano": "1760100007410000000",
+       "attributes": [
+        {
+         "key": "codec",
+         "value": {
+          "stringValue": "h264"
+         }
+        },
+        {
+         "key": "frames",
+         "value": {
+          "intValue": "7200"
+         }
+        },
+        {
+         "key": "fps",
+         "value": {
+          "doubleValue": 2.75
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000007",
+       "parentSpanId": "0000000000000004",
+       "name": "ffmpeg 480p",
+       "startTimeUnixNano": "1760100004792000000",
+       "endTimeUnixNano": "1760100006105000000",
+       "attributes": [
+        {
+         "key": "codec",
+         "value": {
+          "stringValue": "h264"
+         }
+        },
+        {
+         "key": "frames",
+         "value": {
+          "intValue": "7200"
+         }
+        },
+        {
+         "key": "fps",
+         "value": {
+          "doubleValue": 5.48
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "e84b0556e84b0556e84b0556e84b0556",
+       "spanId": "0000000000000008",
+       "parentSpanId": "0000000000000004",
+       "name": "upload renditions",
+       "startTimeUnixNano": "1760100007412000000",
+       "endTimeUnixNano": "1760100009415000000",
+       "attributes": [
+        {
+         "key": "bytes",
+         "value": {
+          "intValue": "39112004"
+         }
+        },
+        {
+         "key": "parts",
+         "value": {
+          "intValue": "8"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+# OS and editor state
+.DS_Store
+**/.DS_Store
+*.swp
+*~
+
+# Local agent/session state
+.pi/
+.claude/
+HANDOFF.md
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# Dependencies and logs
+node_modules/
+*.log
+npm-debug.log*
+
+# Local evaluation, research, and generated artifacts
+artifacts/
+research/
+pprof-render/out/
+**/.wrangler/
+self/
+before.png
+
+# Production and profiling captures
+/captures/
+/capture-*/
+/prod-*/
+/*.cpuprofile
+/*.pprof

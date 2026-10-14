@@ -1,0 +1,450 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "edge-gateway"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "a1",
+       "parentSpanId": "",
+       "name": "GET /api/checkout",
+       "startTimeUnixNano": "1760000000000000000",
+       "endTimeUnixNano": "1760000000182000000",
+       "attributes": [
+        {
+         "key": "http.method",
+         "value": {
+          "stringValue": "GET"
+         }
+        },
+        {
+         "key": "http.route",
+         "value": {
+          "stringValue": "/api/checkout"
+         }
+        },
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "502"
+         }
+        },
+        {
+         "key": "cf.colo",
+         "value": {
+          "stringValue": "EWR"
+         }
+        },
+        {
+         "key": "user.tier",
+         "value": {
+          "stringValue": "pro"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "a2",
+       "parentSpanId": "a1",
+       "name": "auth.verify_jwt",
+       "startTimeUnixNano": "1760000000002000000",
+       "endTimeUnixNano": "1760000000009500000",
+       "attributes": [
+        {
+         "key": "jwt.alg",
+         "value": {
+          "stringValue": "ES256"
+         }
+        },
+        {
+         "key": "cache.hit",
+         "value": {
+          "stringValue": "false"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "a3",
+       "parentSpanId": "a1",
+       "name": "ratelimit.check",
+       "startTimeUnixNano": "1760000000009600000",
+       "endTimeUnixNano": "1760000000010100000",
+       "attributes": [
+        {
+         "key": "ratelimit.remaining",
+         "value": {
+          "intValue": "118"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "a4",
+       "parentSpanId": "a1",
+       "name": "fetch checkout-svc",
+       "startTimeUnixNano": "1760000000011000000",
+       "endTimeUnixNano": "1760000000180000000",
+       "attributes": [
+        {
+         "key": "http.url",
+         "value": {
+          "stringValue": "https://checkout.internal/checkout"
+         }
+        },
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "502"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "checkout-svc"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "b1",
+       "parentSpanId": "a4",
+       "name": "POST /checkout",
+       "startTimeUnixNano": "1760000000014000000",
+       "endTimeUnixNano": "1760000000178000000",
+       "attributes": [
+        {
+         "key": "http.route",
+         "value": {
+          "stringValue": "/checkout"
+         }
+        },
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "502"
+         }
+        },
+        {
+         "key": "cart.items",
+         "value": {
+          "intValue": "3"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "b2",
+       "parentSpanId": "b1",
+       "name": "cart.load",
+       "startTimeUnixNano": "1760000000015000000",
+       "endTimeUnixNano": "1760000000041000000",
+       "attributes": [
+        {
+         "key": "db.system",
+         "value": {
+          "stringValue": "postgresql"
+         }
+        },
+        {
+         "key": "db.rows",
+         "value": {
+          "intValue": "3"
+         }
+        },
+        {
+         "key": "cache.hit",
+         "value": {
+          "stringValue": "false"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "b3",
+       "parentSpanId": "b1",
+       "name": "pricing.compute {tax, shipping, discounts}",
+       "startTimeUnixNano": "1760000000042000000",
+       "endTimeUnixNano": "1760000000077000000",
+       "attributes": [
+        {
+         "key": "pricing.rules_evaluated",
+         "value": {
+          "intValue": "412"
+         }
+        },
+        {
+         "key": "region",
+         "value": {
+          "stringValue": "US-NY"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "b4",
+       "parentSpanId": "b1",
+       "name": "payments.charge",
+       "startTimeUnixNano": "1760000000078000000",
+       "endTimeUnixNano": "1760000000171000000",
+       "attributes": [
+        {
+         "key": "rpc.system",
+         "value": {
+          "stringValue": "grpc"
+         }
+        },
+        {
+         "key": "rpc.method",
+         "value": {
+          "stringValue": "Charge"
+         }
+        },
+        {
+         "key": "amount.cents",
+         "value": {
+          "intValue": "12999"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "payments: 402"
+       }
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "b7",
+       "parentSpanId": "b1",
+       "name": "emit order.created ~async",
+       "startTimeUnixNano": "1760000000172000000",
+       "endTimeUnixNano": "1760000000176000000",
+       "attributes": [
+        {
+         "key": "messaging.system",
+         "value": {
+          "stringValue": "queues"
+         }
+        },
+        {
+         "key": "messaging.batch_size",
+         "value": {
+          "intValue": "1"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "payments"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "c1",
+       "parentSpanId": "b4",
+       "name": "POST /charge",
+       "startTimeUnixNano": "1760000000080000000",
+       "endTimeUnixNano": "1760000000169000000",
+       "attributes": [
+        {
+         "key": "http.route",
+         "value": {
+          "stringValue": "/charge"
+         }
+        },
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "402"
+         }
+        },
+        {
+         "key": "idempotency.key",
+         "value": {
+          "stringValue": "ord_8841"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "402 from stripe"
+       }
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "c2",
+       "parentSpanId": "c1",
+       "name": "db.query SELECT * FROM cards WHERE id=$1",
+       "startTimeUnixNano": "1760000000081000000",
+       "endTimeUnixNano": "1760000000088000000",
+       "attributes": [
+        {
+         "key": "db.system",
+         "value": {
+          "stringValue": "postgresql"
+         }
+        },
+        {
+         "key": "db.rows",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "db.pool.wait_ms",
+         "value": {
+          "intValue": "4"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "c3",
+       "parentSpanId": "c1",
+       "name": "stripe.create_intent",
+       "startTimeUnixNano": "1760000000089000000",
+       "endTimeUnixNano": "1760000000140000000",
+       "attributes": [
+        {
+         "key": "http.url",
+         "value": {
+          "stringValue": "https://api.stripe.com/v1/payment_intents"
+         }
+        },
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        },
+        {
+         "key": "net.peer.region",
+         "value": {
+          "stringValue": "us-west-2"
+         }
+        },
+        {
+         "key": "tls.resumed",
+         "value": {
+          "stringValue": "false"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "c4",
+       "parentSpanId": "c1",
+       "name": "stripe.confirm [retry #2]",
+       "startTimeUnixNano": "1760000000141000000",
+       "endTimeUnixNano": "1760000000168000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "402"
+         }
+        },
+        {
+         "key": "retry.count",
+         "value": {
+          "intValue": "2"
+         }
+        },
+        {
+         "key": "retry.backoff_ms",
+         "value": {
+          "intValue": "8"
+         }
+        }
+       ],
+       "status": {
+        "code": 2,
+        "message": "card_declined: insufficient_funds"
+       },
+       "events": [
+        {
+         "name": "exception",
+         "timeUnixNano": "1760000000166000000",
+         "attributes": [
+          {
+           "key": "exception.type",
+           "value": {
+            "stringValue": "StripeCardError"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "traceId": "5b8efff798038103d269b633813fc60c",
+       "spanId": "c5",
+       "parentSpanId": "zz",
+       "name": "orphan: café lookup",
+       "startTimeUnixNano": "1760000000150000000",
+       "endTimeUnixNano": "1760000000150000400",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

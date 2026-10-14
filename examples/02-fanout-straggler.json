@@ -1,0 +1,397 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "bff"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000001",
+       "parentSpanId": "",
+       "name": "GET /home",
+       "startTimeUnixNano": "1760100000000000000",
+       "endTimeUnixNano": "1760100000318000000",
+       "attributes": [
+        {
+         "key": "http.route",
+         "value": {
+          "stringValue": "/home"
+         }
+        },
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000002",
+       "parentSpanId": "0000000000000001",
+       "name": "auth",
+       "startTimeUnixNano": "1760100000000500000",
+       "endTimeUnixNano": "1760100000003500000",
+       "attributes": [
+        {
+         "key": "cache.hit",
+         "value": {
+          "stringValue": "true"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000010",
+       "parentSpanId": "0000000000000001",
+       "name": "render",
+       "startTimeUnixNano": "1760100000302000000",
+       "endTimeUnixNano": "1760100000317000000",
+       "attributes": [
+        {
+         "key": "response.bytes",
+         "value": {
+          "intValue": "91244"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "profile"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000003",
+       "parentSpanId": "0000000000000001",
+       "name": "GET /profile",
+       "startTimeUnixNano": "1760100000004000000",
+       "endTimeUnixNano": "1760100000026000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000004",
+       "parentSpanId": "0000000000000003",
+       "name": "handler",
+       "startTimeUnixNano": "1760100000005000000",
+       "endTimeUnixNano": "1760100000025000000",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "feed"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000005",
+       "parentSpanId": "0000000000000001",
+       "name": "GET /feed",
+       "startTimeUnixNano": "1760100000004000000",
+       "endTimeUnixNano": "1760100000065000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        },
+        {
+         "key": "feed.items",
+         "value": {
+          "intValue": "50"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000006",
+       "parentSpanId": "0000000000000005",
+       "name": "handler",
+       "startTimeUnixNano": "1760100000005000000",
+       "endTimeUnixNano": "1760100000064000000",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "ads"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000007",
+       "parentSpanId": "0000000000000001",
+       "name": "GET /ads",
+       "startTimeUnixNano": "1760100000004000000",
+       "endTimeUnixNano": "1760100000042000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000008",
+       "parentSpanId": "0000000000000007",
+       "name": "handler",
+       "startTimeUnixNano": "1760100000005000000",
+       "endTimeUnixNano": "1760100000041000000",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "notifications"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "0000000000000009",
+       "parentSpanId": "0000000000000001",
+       "name": "GET /notifications",
+       "startTimeUnixNano": "1760100000004000000",
+       "endTimeUnixNano": "1760100000021000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "000000000000000a",
+       "parentSpanId": "0000000000000009",
+       "name": "handler",
+       "startTimeUnixNano": "1760100000005000000",
+       "endTimeUnixNano": "1760100000020000000",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "recommendations"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "000000000000000b",
+       "parentSpanId": "0000000000000001",
+       "name": "GET /recommendations",
+       "startTimeUnixNano": "1760100000004000000",
+       "endTimeUnixNano": "1760100000301000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        },
+        {
+         "key": "model.version",
+         "value": {
+          "stringValue": "v41"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "000000000000000c",
+       "parentSpanId": "000000000000000b",
+       "name": "feature fetch",
+       "startTimeUnixNano": "1760100000006000000",
+       "endTimeUnixNano": "1760100000031000000",
+       "attributes": [
+        {
+         "key": "features.count",
+         "value": {
+          "intValue": "212"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "000000000000000d",
+       "parentSpanId": "000000000000000b",
+       "name": "model inference",
+       "startTimeUnixNano": "1760100000032000000",
+       "endTimeUnixNano": "1760100000296000000",
+       "attributes": [
+        {
+         "key": "model.batch",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "gpu.queue_ms",
+         "value": {
+          "intValue": "231"
+         }
+        },
+        {
+         "key": "inference_ms",
+         "value": {
+          "intValue": "33"
+         }
+        }
+       ],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "search-suggest"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "spans": [
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "000000000000000e",
+       "parentSpanId": "0000000000000001",
+       "name": "GET /search-suggest",
+       "startTimeUnixNano": "1760100000004000000",
+       "endTimeUnixNano": "1760100000048000000",
+       "attributes": [
+        {
+         "key": "http.status_code",
+         "value": {
+          "intValue": "200"
+         }
+        }
+       ],
+       "status": {}
+      },
+      {
+       "traceId": "af8087fbaf8087fbaf8087fbaf8087fb",
+       "spanId": "000000000000000f",
+       "parentSpanId": "000000000000000e",
+       "name": "handler",
+       "startTimeUnixNano": "1760100000005000000",
+       "endTimeUnixNano": "1760100000047000000",
+       "attributes": [],
+       "status": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

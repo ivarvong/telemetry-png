@@ -1,0 +1,23 @@
+# Example name: choose a unique Worker name before deploying.
+name = "otel-png-observability-demo"
+main = "worker.mjs"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[version_metadata]
+binding = "CF_VERSION_METADATA"
+
+[[ratelimits]]
+name = "EXPENSIVE_RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 20, period = 60 }
+
+# Account telemetry routes also require secrets named CF_ACCOUNT_ID,
+# CF_API_TOKEN, and TELEMETRY_AUTH_SECRET (minimum 16 characters). Without the
+# application secret those routes return 503; an invalid bearer token returns 401.
+[observability]
+enabled = true
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 1
